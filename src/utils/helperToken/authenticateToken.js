@@ -16,27 +16,22 @@ const authenticateToken = (req, res, next) => {
     return res.sendStatus(401);
   }
 
-  try {
-    jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
-      if (error) {
-        if (error.name === "TokenExpiredError") {
-          console.error("Token expirado:", error);
-          return res.status(401).json({ msg: "Token expired" });
-        } else {
-          console.error("Token inválido:", error);
-          return res.sendStatus(403).json(error);
-        }
+  jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
+    if (error) {
+      if (error.name === "TokenExpiredError") {
+        console.error("Token expirado:", error);
+        return res.status(401).json({ msg: "Token expired" });
+      } else {
+        console.error("Token inválido:", error);
+        return res.status(403).json(error);
       }
+    }
 
-      if (verify === "HotelR&S**2024") return res.status(201).json({ user });
+    if (verify === "HotelR&S**2024") return res.status(201).json({ user });
 
-      req.user = user;
-      return next();
-    });
-  } catch (error) {
-    console.error("Error al autenticar el Token:", error);
-    return res.status(401).json({ msg: "Error al autenticar el Token" });
-  }
+    req.user = user;
+    next();
+  });
 };
 
 export {

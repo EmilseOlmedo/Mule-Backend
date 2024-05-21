@@ -72,10 +72,10 @@ const createOrderShipmentController = async (
   weight,
   declared_value,
   product_image,
-  pay_method
+  pay_method,
   // typeShipmentId,
   // measureId,
-  // user_id
+  user_id
 ) => {
   try {
     // const typeShipment = await TypeShipment.findByPk(typeShipmentId);
@@ -105,7 +105,7 @@ const createOrderShipmentController = async (
       pay_method,
       // typeShipmentId,
       // measureId,
-      // user_id,
+      user_id,
     });
 
     return newOrderShipment;
@@ -166,10 +166,24 @@ const deleteOrderShipmentController = async (id) => {
   }
 };
 
+const getOrderByUser = async (req, res) => {
+  try {
+    const userId = req.User.id;
+    console.log('userId', userId)
+    const shipments = await OrderShipment.findAll({
+      where: { user_id: userId },
+    });
+    res.status(200).send(shipments);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+}
+
 export {
   getAllOrderShipmentsController,
   getOrderShipmentByIdController,
   createOrderShipmentController,
   updateOrderShipmentController,
   deleteOrderShipmentController,
+  getOrderByUser
 };

@@ -10,6 +10,10 @@ export default (sequelize) => {
         primaryKey: true,
         unique: true,
       },
+      user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
 
       name_claimant: {
         type: DataTypes.STRING,
